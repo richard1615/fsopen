@@ -8,7 +8,40 @@ const Button = ({ onClick, text }) => {
     )
 }
 
-const Statistics = ({ type, count }) => {
+const Statistics = ({ good, bad, neutral, total }) => {
+    if (total === 0) {
+        return (
+            <p>
+                No feedback given
+            </p>
+        )
+    }
+    const calcAvg = () => {
+        if (total === 0) {
+            return 0
+        }
+        return (good - bad) / total //good * 1 + neutral * 0 + bad * -1
+    }
+
+    const calcPos = () => {
+        if (total === 0) {
+            return 0
+        }
+        return good / total
+    }
+
+    return (
+        <div>
+            <StatisticLine type='good' count={good}/>
+            <StatisticLine type='neutral' count={neutral}/>
+            <StatisticLine type='bad' count={bad}/>
+            <StatisticLine type='average' count={calcAvg()}/>
+            <StatisticLine type='positive' count={calcPos()}/>
+        </div>
+    )
+}
+
+const StatisticLine = ({ type, count }) => {
     if (type === 'positive') {
         return (
             <p>
@@ -45,20 +78,6 @@ const App = () => {
         setTotal(total + 1)
     }
 
-    const calcAvg = () => {
-        if (total === 0) {
-            return 0
-        }
-        return (good - bad) / total //good * 1 + neutral * 0 + bad * -1
-    }
-
-    const calcPos = () => {
-        if (total === 0) {
-            return 0
-        }
-        return good / total
-    }
-
     return (
         <div>
             <h1>Give Feedback</h1>
@@ -66,11 +85,7 @@ const App = () => {
             <Button onClick={handleNeutral} text='neutral'/>
             <Button onClick={handleBad} text='bad'/>
             <h1>Statistics</h1>
-            <Statistics type='good' count={good}/>
-            <Statistics type='neutral' count={neutral}/>
-            <Statistics type='bad' count={bad}/>
-            <Statistics type='average' count={calcAvg()}/>
-            <Statistics type='positive' count={calcPos()}/>
+            <Statistics good={good} bad={bad} neutral={neutral} total={total}/>
         </div>
     )
     }
