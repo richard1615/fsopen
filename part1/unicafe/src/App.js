@@ -31,28 +31,32 @@ const Statistics = ({ good, bad, neutral, total }) => {
     }
     // Further refactored
     return (
-        <div>
-            <StatisticLine type='good' count={good}/>
-            <StatisticLine type='neutral' count={neutral}/>
-            <StatisticLine type='bad' count={bad}/>
-            <StatisticLine type='average' count={calcAvg()}/>
-            <StatisticLine type='positive' count={calcPos()}/>
-        </div>
+        <table>
+            <tbody>
+                <StatisticLine type='good' count={good}/>
+                <StatisticLine type='neutral' count={neutral}/>
+                <StatisticLine type='bad' count={bad}/>
+                <StatisticLine type='average' count={calcAvg()}/>
+                <StatisticLine type='positive' count={calcPos()}/>
+            </tbody>
+        </table>
     )
 }
 
 const StatisticLine = ({ type, count }) => {
     if (type === 'positive') {
         return (
-            <p>
-                {type} {count} %
-            </p>
+            <tr>
+                <td>{type}</td>
+                <td>{count} %</td>
+            </tr>
         )
     }
     return (
-        <p>
-            {type} {count}
-        </p>
+        <tr>
+            <td>{type}</td>
+            <td>{count}</td>
+        </tr>
     )
 }
 
