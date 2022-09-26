@@ -8,7 +8,14 @@ const Button = ({ onClick, text }) => {
     )
 }
 
-const Data = ({ type, count }) => {
+const Statistics = ({ type, count }) => {
+    if (type === 'positive') {
+        return (
+            <p>
+                {type} {count} %
+            </p>
+        )
+    }
     return (
         <p>
             {type} {count}
@@ -39,14 +46,14 @@ const App = () => {
     }
 
     const calcAvg = () => {
-        if (total == 0) {
+        if (total === 0) {
             return 0
         }
         return (good - bad) / total //good * 1 + neutral * 0 + bad * -1
     }
 
     const calcPos = () => {
-        if (total == 0) {
+        if (total === 0) {
             return 0
         }
         return good / total
@@ -59,15 +66,11 @@ const App = () => {
             <Button onClick={handleNeutral} text='neutral'/>
             <Button onClick={handleBad} text='bad'/>
             <h1>Statistics</h1>
-            <Data type='good' count={good}/>
-            <Data type='neutral' count={neutral}/>
-            <Data type='bad' count={bad}/>
-            <p>
-                average {calcAvg()}
-            </p>
-            <p>
-                average {calcPos()} %
-            </p>
+            <Statistics type='good' count={good}/>
+            <Statistics type='neutral' count={neutral}/>
+            <Statistics type='bad' count={bad}/>
+            <Statistics type='average' count={calcAvg()}/>
+            <Statistics type='positive' count={calcPos()}/>
         </div>
     )
     }
