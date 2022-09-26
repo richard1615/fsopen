@@ -29,7 +29,7 @@ const Statistics = ({ good, bad, neutral, total }) => {
         }
         return good / total
     }
-
+    // Further refactored
     return (
         <div>
             <StatisticLine type='good' count={good}/>
