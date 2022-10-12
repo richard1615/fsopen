@@ -30,9 +30,18 @@ const AddName = ({ newName, setNewName, persons, setPersons }) => {
 
     const handleSubmission = (event) => {
         event.preventDefault()
-        const nameObject = { name: newName }
-        setPersons(persons.concat(nameObject))
-        setNewName('')
+        const duplicate = persons.filter((person) => person.name === newName )
+        if (duplicate.length === 0) {
+            const nameObject = { name: newName }
+            setPersons(persons.concat(nameObject))
+            setNewName('')
+        }
+        else {
+            setNewName('')
+            return (
+                alert(`${newName} is already added to phonebook`)
+            )
+        }
     }
 
     return (
