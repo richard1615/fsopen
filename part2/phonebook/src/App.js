@@ -14,6 +14,7 @@ const App = () => {
         event.preventDefault()
         const nameObject = { name: newName }
         setPersons(persons.concat(nameObject))
+        setNewName('')
     }
 
     return (
@@ -21,7 +22,7 @@ const App = () => {
             <h2>Phonebook</h2>
             <form>
                 <div>
-                    name: <input onChange={handleChange}/>
+                    name: <input value={newName} onChange={handleChange}/>
                 </div>
                 <div>
                     <button type="submit" onClick={handleSubmission}>add</button>
