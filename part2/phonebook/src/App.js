@@ -6,6 +6,24 @@ const App = () => {
     ])
     const [newName, setNewName] = useState('')
 
+    return (
+        <div>
+            <h2>Phonebook</h2>
+            <AddName
+                newName={newName}
+                setNewName={setNewName}
+                persons={persons}
+                setPersons={setPersons}
+            />
+            <NameList
+                persons={persons}
+            />
+        </div>
+    )
+}
+
+const AddName = ({ newName, setNewName, persons, setPersons }) => {
+
     const handleChange = (event) => {
         setNewName(event.target.value)
     }
@@ -18,8 +36,7 @@ const App = () => {
     }
 
     return (
-        <div>
-            <h2>Phonebook</h2>
+        <>
             <form>
                 <div>
                     name: <input value={newName} onChange={handleChange}/>
@@ -28,11 +45,18 @@ const App = () => {
                     <button type="submit" onClick={handleSubmission}>add</button>
                 </div>
             </form>
+        </>
+    )
+}
+
+const NameList = ({ persons }) => {
+    return (
+        <>
             <h2>Numbers</h2>
             <ul>
                 {persons.map((person) => <li key={person.name}>{person.name}</li>)}
             </ul>
-        </div>
+        </>
     )
 }
 
