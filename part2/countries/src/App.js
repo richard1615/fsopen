@@ -101,6 +101,11 @@ const DetailCountry = ({ c, flag }) => {
             </div>
         )
     }
+    else {
+        return (
+            <div></div>
+        )
+    }
 }
 
 export default App;
