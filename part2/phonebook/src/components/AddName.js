@@ -1,4 +1,4 @@
-import axios from 'axios'
+import personService from "../services/personService";
 
 
 const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNumber }) => {
@@ -17,10 +17,10 @@ const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNu
         if (duplicate.length === 0) {
             const personObject = { name: newName, number: newNumber }
 
-            axios
-                .post("http://localhost:3001/persons", personObject)
-                .then((response) => {
-                    setPersons(persons.concat(response.data))
+            personService
+                .create(personObject)
+                .then(createdData => {
+                    setPersons(persons.concat(createdData))
                     setNewName('')
                     setNewNumber('')
                 })

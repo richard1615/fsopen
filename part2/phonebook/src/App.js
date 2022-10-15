@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
+import personService from "./services/personService";
 import Filter from './components/Filter'
 import AddName from './components/AddName'
 import NameList from './components/NameList'
@@ -13,13 +13,11 @@ const App = () => {
     const [search, setSearch] = useState('')
 
     useEffect(() => {
-        console.log("effect")
-        axios
-            .get("http://localhost:3001/persons")
-            .then((response) => {
-                console.log(response)
-                setPersons(response.data)
-            })
+            personService
+                .getAll()
+                .then(initialData => {
+                    setPersons(initialData)
+                })
     }, [])
 
     return (
