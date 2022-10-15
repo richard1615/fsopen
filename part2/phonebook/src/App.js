@@ -19,11 +19,8 @@ const App = () => {
             .then((response) => {
                 console.log(response)
                 setPersons(response.data)
-                setFiltered(persons)
             })
     }, [])
-
-
 
     return (
         <div>

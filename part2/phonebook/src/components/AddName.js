@@ -1,3 +1,6 @@
+import axios from 'axios'
+
+
 const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNumber }) => {
 
     const handleChangeName = (event) => {
@@ -12,10 +15,16 @@ const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNu
         event.preventDefault()
         const duplicate = persons.filter((person) => person.name === newName )
         if (duplicate.length === 0) {
-            const personObject = { name: newName, number: newNumber, id: persons.length+1 }
-            setPersons(persons.concat(personObject))
-            setNewName('')
-            setNewNumber('')
+            const personObject = { name: newName, number: newNumber }
+
+            axios
+                .post("http://localhost:3001/persons", personObject)
+                .then((response) => {
+                    setPersons(persons.concat(response.data))
+                    setNewName('')
+                    setNewNumber('')
+                })
+
         }
         else {
             setNewName('')

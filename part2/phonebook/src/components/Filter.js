@@ -6,7 +6,6 @@ const Filter = ({ persons, setFiltered, search, setSearch }) => {
         }
         else {
             const filter = persons.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
-            console.log(filter)
             setFiltered(filter)
         }
     }
