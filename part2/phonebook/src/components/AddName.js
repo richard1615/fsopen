@@ -16,7 +16,6 @@ const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNu
         const duplicate = persons.filter((person) => person.name === newName )
         if (duplicate.length === 0) {
             const personObject = { name: newName, number: newNumber }
-
             personService
                 .create(personObject)
                 .then(createdData => {
@@ -24,7 +23,6 @@ const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNu
                     setNewName('')
                     setNewNumber('')
                 })
-
         }
         else {
             setNewName('')

@@ -2,7 +2,7 @@ const Filter = ({ persons, setFiltered, search, setSearch }) => {
     const handleChangeSearch = (event) => {
         setSearch(event.target.value)
         if (search === '') {
-            setFiltered(persons)
+            setFiltered(persons.slice())
         }
         else {
             const filter = persons.filter((p) => p.name.toLowerCase().includes(search.toLowerCase()))
