@@ -1,7 +1,7 @@
 import personService from "../services/personService";
 
 
-const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNumber }) => {
+const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNumber, setFiltered }) => {
 
     const handleChangeName = (event) => {
         setNewName(event.target.value)
@@ -27,9 +27,17 @@ const AddName = ({ newName, setNewName, persons, setPersons, newNumber, setNewNu
         else {
             setNewName('')
             setNewNumber('')
-            return (
-                alert(`${newName} is already added to phonebook`)
-            )
+            if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+                const person = duplicate[0]
+                const newPerson = {...person, number:newNumber}
+                personService
+                    .editObject(newPerson)
+                    .then(editedPerson => {
+                        const newPersons = persons.map(p => p.name !== person.name?p:editedPerson)
+                        setPersons(newPersons)
+                        setFiltered(newPersons)
+                    })
+            }
         }
     }
 

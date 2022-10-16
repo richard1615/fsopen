@@ -57,6 +57,7 @@ const App = () => {
                 setNewNumber={setNewNumber}
                 persons={persons}
                 setPersons={setPersons}
+                setFiltered={setFiltered}
             />
             <NameList
                 filtered={filtered}
