@@ -3,14 +3,16 @@ import personService from "./services/personService";
 import Filter from './components/Filter'
 import AddName from './components/AddName'
 import NameList from './components/NameList'
+import Notification from './components/Notification'
 
 
 const App = () => {
     const [persons, setPersons] = useState([])
     const [filtered, setFiltered] = useState([...persons])
-    const [newName, setNewName] = useState('')
-    const [newNumber, setNewNumber] = useState('')
-    const [search, setSearch] = useState('')
+    const [message, setMessage] = useState({
+        text: '',
+        type: ''
+    })
 
     useEffect(() => {
             personService
@@ -20,48 +22,29 @@ const App = () => {
                 })
     }, [])
 
-    const deletePerson = (event) => {
-        const id = Number(event.target.value)
-        const person = persons.find((p) => {
-            return id === p.id})
-        if (window.confirm(`Delete ${person.name}?`)) {
-            personService
-                .deleteObject(id)
-                .then(() => {
-                    const newPersons = persons.filter((p) => p.id !== id)
-                    setPersons(newPersons)
-                    setFiltered(newPersons)
-                })
-                .catch(() => {
-                    setFiltered(persons)
-                    return(
-                        alert("Entry already deleted")
-                    )
-                })
-        }
-    }
-
     return (
         <div>
             <h2>Phonebook</h2>
+            <Notification
+                message={message.text}
+                type={message.type}
+            />
             <Filter
-                search={search}
-                setSearch={setSearch}
                 persons={persons}
                 setFiltered={setFiltered}
             />
             <AddName
-                newName={newName}
-                setNewName={setNewName}
-                newNumber={newNumber}
-                setNewNumber={setNewNumber}
                 persons={persons}
                 setPersons={setPersons}
                 setFiltered={setFiltered}
+                setMessage={setMessage}
             />
             <NameList
                 filtered={filtered}
-                deletePerson={deletePerson}
+                persons={persons}
+                setMessage={setMessage}
+                setPersons={setPersons}
+                setFiltered={setFiltered}
             />
         </div>
     )

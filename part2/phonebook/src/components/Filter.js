@@ -1,4 +1,7 @@
-const Filter = ({ persons, setFiltered, search, setSearch }) => {
+import {useState} from "react";
+
+const Filter = ({ persons, setFiltered }) => {
+    const [search, setSearch] = useState('')
     const handleChangeSearch = (event) => {
         setSearch(event.target.value)
         if (search === '') {
