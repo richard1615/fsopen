@@ -75,18 +75,17 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 const checkDuplicate = (name) => {
-    return persons.find((p) => p.name === name)
+    return false
 }
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    const newId = Math.floor(Math.random() * MAX)
 
-    const person = {
-        "id": newId,
+    const person = new Person({
         "name": body.name,
         "number": body.number
-    }
+    })
+
     // empty field
     if (!body.name || !body.number){
         response.status(400).json({ error: 'content missing' })
@@ -97,8 +96,10 @@ app.post('/api/persons', (request, response) => {
         response.status(409).json({error: 'name must be unique' })
     }
     else {
-        persons = persons.concat(person)
-        response.json(person)
+        person.save()
+            .then(savedNote => {
+                response.json(savedNote)
+            })
     }
 })
 
