@@ -51,7 +51,7 @@ app.get('/api/persons/:id', (request, response, next) => {
 
 app.get('/info', (request, response) => {
     // https://www.geeksforgeeks.org/mongoose-count-function/
-    const query = Person.find();
+    const query = Person.find()
     query.count((err, count) => {
         if (err) console.log(err)
         else {
@@ -66,6 +66,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
         .then(result => {
             response.status(204).end()
+            return result
         })
         .catch(error => {
             next(error)
@@ -87,8 +88,8 @@ app.post('/api/persons', (request, response, next) => {
     const body = request.body
 
     const person = new Person({
-        "name": body.name,
-        "number": body.number
+        'name': body.name,
+        'number': body.number
     })
 
     // empty field
