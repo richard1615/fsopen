@@ -15,6 +15,8 @@ const errorHandler = (error, request, response, next) => {
 
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id' })
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message })
     }
 
     next(error)
@@ -35,7 +37,7 @@ app.get('/api/persons', (request, response) => {
     })
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
     Person.findById(request.params.id)
         .then(person => {
             if (person) {
@@ -44,14 +46,20 @@ app.get('/api/persons/:id', (request, response) => {
                 response.status(404).end()
             }
         })
+        .catch(error => next(error))
 })
 
 app.get('/info', (request, response) => {
-    const num = 2
-    response.send(
-        `<p>Phonebook has info for ${num} people</p>` +
-        `<p>${new Date()}</p>`
-    )
+    // https://www.geeksforgeeks.org/mongoose-count-function/
+    const query = Person.find();
+    query.count((err, count) => {
+        if (err) console.log(err)
+        else {
+            response.send(
+                `<p>Phonebook has info for ${count} people</p>` +
+                `<p>${new Date()}</p>`
+            )}
+    })
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
@@ -109,7 +117,7 @@ app.put('/api/persons/:id', (request, response, next) => {
         number: body.number,
     }
 
-    Person.findByIdAndUpdate(request.params.id, person, {new:true})
+    Person.findByIdAndUpdate(request.params.id, person, {new:true, runValidators: true, context: 'query'})
         .then(updatedNote => {
             response.json(updatedNote)
         })
