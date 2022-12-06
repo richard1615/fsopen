@@ -3,13 +3,14 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 const Blog = require('./models/blog')
+const logger = require('./utils/logger')
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
 }
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
+    logger.error(error.message)
 
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'malformatted id' })
@@ -58,5 +59,5 @@ app.use(errorHandler)
 
 const PORT = 3003
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+    logger.info(`Server running on port ${PORT}`)
 })
