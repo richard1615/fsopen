@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const config = require('../utils/config.js')
 
 const blogSchema = new mongoose.Schema({
     title: String,
@@ -15,7 +16,7 @@ blogSchema.set('toJSON', {
     }
 })
 
-const mongoUrl = 'mongodb+srv://malu:L2kz7RuKxu5uKKV@cluster0.vjx3v9o.mongodb.net/?retryWrites=true&w=majority'
+const mongoUrl = config.MONGO_URI
 
 mongoose.connect(mongoUrl)
     .then(result => {

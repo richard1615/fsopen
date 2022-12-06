@@ -4,6 +4,7 @@ const app = express()
 const cors = require('cors')
 const Blog = require('./models/blog')
 const logger = require('./utils/logger')
+const config = require('./utils/config')
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
@@ -57,7 +58,7 @@ app.post('/api/blogs', (request, response) => {
 app.use(unknownEndpoint)
 app.use(errorHandler)
 
-const PORT = 3003
+const PORT = config.PORT
 app.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`)
 })
