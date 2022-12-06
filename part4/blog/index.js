@@ -5,6 +5,7 @@ const cors = require('cors')
 const Blog = require('./models/blog')
 const logger = require('./utils/logger')
 const config = require('./utils/config')
+const blogsRouter = require('./controller/notes')
 
 const unknownEndpoint = (request, response) => {
     response.status(404).send({ error: 'unknown endpoint' })
@@ -24,36 +25,7 @@ const errorHandler = (error, request, response, next) => {
 
 app.use(cors())
 app.use(express.json())
-
-app.get('/api/blogs', (request, response) => {
-    Blog
-        .find({})
-        .then(blogs => {
-            response.json(blogs)
-        })
-})
-
-app.get('/api/blogs/:id', (request, response, next) => {
-    Blog
-        .findById(request.params.id)
-        .then(blog => {
-            if (blog) {
-                response.json(blog)
-            } else {
-                response.status(404).end()
-            }
-        })
-        .catch(error => next(error))
-})
-
-app.post('/api/blogs', (request, response) => {
-    const blog = new Blog(request.body)
-    blog
-        .save()
-        .then(result => {
-            response.status(201).json(result)
-        })
-})
+app.use('/api/blogs', blogsRouter)
 
 app.use(unknownEndpoint)
 app.use(errorHandler)
