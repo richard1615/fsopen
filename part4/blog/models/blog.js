@@ -16,14 +16,4 @@ blogSchema.set('toJSON', {
     }
 })
 
-const mongoUrl = config.MONGO_URI
-
-mongoose.connect(mongoUrl)
-    .then(result => {
-        console.log('Connected to MongoDB Database')
-    })
-    .catch(error => {
-        console.log('Cannot connect to the database: ' + error.message)
-    })
-
 module.exports = mongoose.model('Blog', blogSchema)
