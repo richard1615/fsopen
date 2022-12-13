@@ -1,5 +1,17 @@
 const listHelper = require('../utils/list_helper')
 const data = require('./data/data')
+const supertest = require('supertest')
+const app = require('../app')
+const Blog = require('../models/blog')
+const mongoose = require('mongoose')
+
+const api = supertest(app)
+jest.setTimeout(30000)
+
+beforeEach(async () => {
+    await Blog.deleteMany({})
+    await Blog.insertMany(data.listWithManyBlogs)
+})
 
 test('dummy returns one', () => {
     const blogs = []
@@ -53,4 +65,21 @@ describe('favourite blog', () => {
             __v: 0
         })
     })
+})
+
+describe('database operations: ', () => {
+    test('all blogs are returned', async () => {
+        const response = await api.get('/api/blogs')
+        expect(response.body).toHaveLength(data.listWithManyBlogs.length)
+    })
+
+    test('unique identifier property of the blog posts is named id', async () => {
+        const response = await api.get('/api/blogs')
+        const blog = response.body[0]
+        expect(blog.id).toBeDefined()
+    })
+})
+
+afterAll(() => {
+    mongoose.connection.close()
 })
