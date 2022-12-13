@@ -32,7 +32,7 @@ describe('total likes', () => {
 
     test('of a bigger list is calculated right', () => {
         const result = listHelper.totalLikes(data.listWithManyBlogs)
-        expect(result).toBe(36)
+        expect(result).toBe(31)
     })
 })
 
@@ -124,6 +124,24 @@ describe('database operations: ', () => {
             'url': 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html'
         })
         expect(blog.likes).toBe(0)
+    })
+
+    test('if the title or url properties are missing, the backend responds with status code 400', async () => {
+        const newBlog = {
+            'url': 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+            'likes': 20
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        //blog is not added
+        const response =  await api.get('/api/blogs')
+        const blogsAtEnd = response.body
+        expect(blogsAtEnd).toHaveLength(data.listWithManyBlogs.length)
     })
 })
 
