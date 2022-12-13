@@ -78,6 +78,53 @@ describe('database operations: ', () => {
         const blog = response.body[0]
         expect(blog.id).toBeDefined()
     })
+
+    test('a valid blog can be added', async () => {
+        const newBlog = {
+            'title': 'Go To Statement Considered Harmful',
+            'author': 'Edsger W. Dijkstra',
+            'url': 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+            'likes': 5
+        }
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const response =  await api.get('/api/blogs')
+        const blogsAtEnd = response.body
+        expect(blogsAtEnd).toHaveLength(data.listWithManyBlogs.length + 1)
+
+        const contents = blogsAtEnd.map(b => b.title)
+        expect(contents).toContain('Go To Statement Considered Harmful')
+    })
+
+    test(' if the likes property is missing from the request, it will default to the value 0', async () => {
+        const newBlog = {
+            'title': 'Go To Statement Considered Harmful',
+            'author': 'Edsger W. Dijkstra',
+            'url': 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html'
+        }
+
+        await api
+            .post('/api/blogs')
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        //blog is successfully added
+        const response =  await api.get('/api/blogs')
+        const blogsAtEnd = response.body
+        expect(blogsAtEnd).toHaveLength(data.listWithManyBlogs.length + 1)
+        // number of likes is zero
+        const blog = await Blog.findOne({
+            'title': 'Go To Statement Considered Harmful',
+            'author': 'Edsger W. Dijkstra',
+            'url': 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html'
+        })
+        expect(blog.likes).toBe(0)
+    })
 })
 
 afterAll(() => {
