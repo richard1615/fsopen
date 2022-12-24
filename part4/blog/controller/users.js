@@ -18,4 +18,9 @@ userRouter.post('/',async (request, response) => {
     response.status(201).json(savedUser)
 })
 
+userRouter.get('/', async (request, response) => {
+    const users = await User.find({})
+    response.json(users)
+})
+
 module.exports = userRouter
