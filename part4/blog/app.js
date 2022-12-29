@@ -14,16 +14,17 @@ const app = express()
 logger.info('connecting to', config.MONGO_URI)
 
 mongoose.connect(config.MONGO_URI)
-    .then(() => {
-        logger.info('connected to MongoDB')
-    })
-    .catch((error) => {
-        logger.error('error connecting to MongoDB:', error.message)
-    })
+	.then(() => {
+		logger.info('connected to MongoDB')
+	})
+	.catch((error) => {
+		logger.error('error connecting to MongoDB:', error.message)
+	})
 
 app.use(cors())
 app.use(express.json())
 app.use(middleware.tokenExtractor)
+app.use(middleware.userExtractor)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', userRouter)
 app.use('/api/login', loginRouter)
