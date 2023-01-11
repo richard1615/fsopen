@@ -1,7 +1,7 @@
 const User = require('../models/user')
 const supertest = require('supertest')
 const app = require('../app')
-const helper = require('./test_helper')
+const helper = require('./list_helper.test')
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 
