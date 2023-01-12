@@ -1,19 +1,36 @@
 import {useState} from "react"
 import loginService from "../services/login"
 
-const Login = ({ user, setUser }) => {
+const Login = ({ user, setUser, setMessage }) => {
     const [ username, setUsername ] = useState('')
     const [ password, setPassword ] = useState('')
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
             const token = await loginService.login({ username, password })
+            window.localStorage.setItem(
+                'loggedBlogAppUser', JSON.stringify(token)
+            )
             setUser(token)
             setUsername('')
             setPassword('')
+            setMessage({
+                text: `Successfully logged in`,
+                type: `success`
+            })
         } catch (exception) {
             console.log(exception)
+            setMessage({
+                text: `${exception.data}`,
+                type: `error`
+            })
         }
+    }
+
+    const handleLogout = () => {
+        console.log('logged out')
+        window.localStorage.removeItem('loggedBlogAppUser')
+        setUser(null)
     }
 
     if (user === null) {
@@ -45,6 +62,7 @@ const Login = ({ user, setUser }) => {
         return (
             <div>
                 { user.name } logged in
+                <button onClick={handleLogout}>Log Out</button>
             </div>
         )
     }
