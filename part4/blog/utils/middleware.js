@@ -17,32 +17,20 @@ const errorHandler = (error, request, response, next) => {
     }
     next(error)
 }
-const tokenExtractor = (request, response, next) => {
-    const auth = request.get('authorisation')
-    if(auth && auth.toLowerCase().startsWith('bearer')){
-        request.token = auth.substring(7)
-    }
-    else{
-        request.token = null
-    }
-    next()
-}
-
-    const userExtractor = async (request, response, next) => {
-    if (request.token) {
-        const decodedToken = jwt.verify(request.token, process.env.SECRET)
-        if (!decodedToken.id) {
-            request.user = null
-        } else {
+const userExtractor = async (request, response, next) => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+        const decodedToken = jwt.verify(authorization.substring(7), process.env.SECRET)
+        if (decodedToken) {
             request.user = await User.findById(decodedToken.id)
         }
     }
+
     next()
 }
 
 module.exports = {
     unknownEndpoint,
     errorHandler,
-    tokenExtractor,
     userExtractor
 }
