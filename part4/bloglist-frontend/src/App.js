@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Login from './components/Login'
-import Blog from './components/Blog'
-import Notification from "./components/Notification";
+import { Blog, BlogForm } from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
     if (user !== null){
       blogService.setToken(user.token)
       blogService.getAll().then(blogs =>
-          setBlogs( blogs )
+        setBlogs( blogs )
       ).catch()
     } else {
       setBlogs([])
@@ -32,11 +32,24 @@ const App = () => {
     }
   }, [])
 
-  const blog = user?<Blog blogs={blogs} setBlogs={setBlogs} setMessage={setMessage}/>:null
+  const sortByLikes = () => {
+    const blogCopy = [...blogs]
+    blogCopy.sort((a, b) => b.likes - a.likes)
+    setBlogs(blogCopy)
+  }
+
+  const blog = user?
+    <>
+      <Notification message={message}/>
+      <h2>blogs</h2>
+      <button onClick={sortByLikes}>Sort by likes</button>
+      <BlogForm setBlogs={setBlogs} setMessage={setMessage} blogs={blogs}/>
+      {blogs.map(blog => <Blog key={blog.id} blog={blog} setMessage={setMessage} user={user}/>)}
+    </>
+    :null
 
   return (
     <div>
-      <Notification message={message}/>
       <Login user={user} setUser={setUser} setMessage={setMessage}/>
       {blog}
     </div>

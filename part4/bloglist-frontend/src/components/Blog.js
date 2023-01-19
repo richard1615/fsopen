@@ -1,6 +1,6 @@
-import {useRef, useState} from "react"
+import { useRef, useState } from 'react'
 import blogService from '../services/blogs'
-import Togglable from "./Togglable"
+import Togglable from './Togglable'
 
 const BlogForm = ({ setMessage, setBlogs, blogs }) => {
   const [ title, setTitle ] = useState('')
@@ -21,7 +21,7 @@ const BlogForm = ({ setMessage, setBlogs, blogs }) => {
           setBlogs(blogs.concat(savedBlog))
           setMessage({
             text: `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
-            type: `success`
+            type: 'success'
           })
           blogFormRef.current.toggleVisibility()
         }
@@ -29,7 +29,7 @@ const BlogForm = ({ setMessage, setBlogs, blogs }) => {
       .catch(exception => {
         setMessage({
           text: `${exception.data}`,
-          type: `error`
+          type: 'error'
         })
       })
     setTimeout(() => {
@@ -46,19 +46,19 @@ const BlogForm = ({ setMessage, setBlogs, blogs }) => {
         <div>
           title
           <input type='text' name='title' value={title}
-                 onChange={({target}) => setTitle(target.value)}
+            onChange={({ target }) => setTitle(target.value)}
           />
         </div>
         <div>
           author
           <input type='text' name='author' value={author}
-                 onChange={({target}) => setAuthor(target.value)}
+            onChange={({ target }) => setAuthor(target.value)}
           />
         </div>
         <div>
           url
           <input type='text' name='url' value={url}
-                 onChange={({target}) => setUrl(target.value)}
+            onChange={({ target }) => setUrl(target.value)}
           />
         </div>
         <input type='submit' value='Add blog'/>
@@ -67,22 +67,66 @@ const BlogForm = ({ setMessage, setBlogs, blogs }) => {
   )
 }
 
-const Blog = ({blogs, setBlogs, setMessage}) => {
+const Blog = ({ blog, setMessage, user }) => {
+  const [ details, setDetails ] = useState(false)
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
+  }
+
+  let blogDetails = null
+  const deleteButton = user.username
+    === blog.user.username
+    ?<button onClick={() => handleRemove(blog.id)}>remove</button>
+    :null
+  const getBlogDetails = (id) => {
+    const response = blogService.getOne(id)
+    response.then(r => {
+      blogDetails =
+        (<>
+          <p>{r.url}</p>
+          <p>likes: {r.likes}</p>
+          <p>{r.user.username}</p>
+        </>)
+    }
+    )
+  }
+  const handleLikes = () => {
+    const updatedObject = { ...blog, likes: blog.likes + 1, user:blog.user.id }
+    const response = blogService.like(updatedObject)
+    response.then(r => {
+      console.log(r)
+      setMessage({
+        text: `Liked ${blog.title}`,
+        type: 'success'
+      })
+    })
+  }
+  const handleRemove = (id) => {
+    if (window.confirm(`remove ${blog.title} by ${blog.author}?`)) {
+      blogService.remove(id)
+        .then(r => {
+          setMessage({
+            text: `Removed ${blog.title}`,
+            type: 'success'
+          })
+        })
+    }
+  }
+
   return (
-    <>
-      <h2>blogs</h2>
-        <BlogForm
-          blogs={blogs}
-          setBlogs={setBlogs}
-          setMessage={setMessage}
-        />
-      <ul>
-        {blogs.map(blog =>
-          <li key={blog.id}>{blog.title} {blog.author}</li>
-        )}
-      </ul>
-    </>
+    <div style={blogStyle} className='blog'>
+      {blog.title} {blog.author}
+      <button onClick={() => handleLikes(blog.id)}>like</button>
+      {deleteButton}
+    </div>
   )
 }
 
-export default Blog
+export {
+  Blog,
+  BlogForm
+}
