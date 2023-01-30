@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Login from './components/Login'
 import { Blog, BlogForm } from './components/Blog'
+import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
 
@@ -11,6 +12,7 @@ const App = () => {
     text: null,
     type: ''
   })
+  const blogFormRef = useRef()
 
   useEffect(() => {
     if (user !== null){
@@ -32,6 +34,57 @@ const App = () => {
     }
   }, [])
 
+  const handleLikes = (id) => {
+    const blog = blogs.find(b => b.id === id)
+    const updatedObject = { ...blog, likes: blog.likes + 1, user:blog.user.id }
+    const response = blogService.like(updatedObject)
+    response.then(r => {
+      console.log(r)
+      setMessage({
+        text: `Liked ${blog.title}`,
+        type: 'success'
+      })
+    })
+  }
+  const handleRemove = (id) => {
+    const blog = blogs.find(b => b.id === id)
+    if (window.confirm(`remove ${blog.title} by ${blog.author}?`)) {
+      blogService.remove(id)
+        .then(() => {
+          setMessage({
+            text: `Removed ${blog.title}`,
+            type: 'success'
+          })
+        })
+    }
+  }
+
+  const handleAddPost = (newBlogObject) => {
+    blogService.create(newBlogObject)
+      .then(
+        savedBlog => {
+          setBlogs(blogs.concat(savedBlog))
+          setMessage({
+            text: `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
+            type: 'success'
+          })
+          blogFormRef.current.toggleVisibility()
+        }
+      )
+      .catch(exception => {
+        setMessage({
+          text: `${exception.data}`,
+          type: 'error'
+        })
+      })
+    setTimeout(() => {
+      setMessage({
+        text: null,
+        type: ''
+      })
+    }, 5000)
+  }
+
   const sortByLikes = () => {
     const blogCopy = [...blogs]
     blogCopy.sort((a, b) => b.likes - a.likes)
@@ -43,8 +96,15 @@ const App = () => {
       <Notification message={message}/>
       <h2>blogs</h2>
       <button onClick={sortByLikes}>Sort by likes</button>
-      <BlogForm setBlogs={setBlogs} setMessage={setMessage} blogs={blogs}/>
-      {blogs.map(blog => <Blog key={blog.id} blog={blog} setMessage={setMessage} user={user}/>)}
+      <Togglable buttonLabel='new blog' ref={blogFormRef}>
+        <BlogForm createBlog={handleAddPost}/>
+      </Togglable>
+      {blogs.map(blog => <Blog
+        key={blog.id}
+        blog={blog}
+        handleLikes={() => handleLikes(blog.id)}
+        handleRemove={() => handleRemove(blog.id)}
+        user={user}/>)}
     </>
     :null
 
