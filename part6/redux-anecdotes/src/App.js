@@ -9,11 +9,13 @@ import { setAnecdotes } from "./reducers/anecdoteReducer"
 
 const App = () => {
   const dispatch = useDispatch()
-
-  useEffect(async () => {
-    const anecdotes = await anecdoteService.getAll()
-    dispatch(setAnecdotes(anecdotes))
+  useEffect(() => {
+    anecdoteService.getAll()
+      .then(anecdotes => {
+        dispatch(setAnecdotes(anecdotes))
+      })
   }, [dispatch]);
+
 
   return (
     <div>
