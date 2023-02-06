@@ -3,7 +3,7 @@
     {
       "content": "If it hurts, do it more often",
       "id": "47145",
-      "votes": 0
+      "votes": 1
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
@@ -13,7 +13,7 @@
     {
       "content": "The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
       "id": "69581",
-      "votes": 0
+      "votes": 9
     },
     {
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
@@ -34,6 +34,16 @@
       "content": "Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients",
       "votes": 0,
       "id": "YJy14lC"
+    },
+    {
+      "content": "Hello Everyone",
+      "votes": 0,
+      "id": "U_6Li8g"
+    },
+    {
+      "content": "Hello everyone",
+      "votes": 0,
+      "id": "jWOySzL"
     }
   ]
 }
