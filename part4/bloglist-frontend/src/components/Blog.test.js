@@ -12,16 +12,16 @@ test('renders only required components', () => {
     likes: 10,
     user: {
       username: 'anne',
-      name: 'Anne Marie'
-    }
+      name: 'Anne Marie',
+    },
   }
 
   const user = {
     name: 'Anne Marie',
-    username: 'anne'
+    username: 'anne',
   }
 
-  const { container } = render(<Blog blog={blog} user={user}/>)
+  const { container } = render(<Blog blog={blog} user={user} />)
 
   const element = container.querySelector('.blog')
   expect(element).toHaveTextContent('someBlog someAuthor')
@@ -37,18 +37,18 @@ test('clicking on the like button twice', async () => {
     likes: 10,
     user: {
       username: 'anne',
-      name: 'Anne Marie'
-    }
+      name: 'Anne Marie',
+    },
   }
 
   const user = {
     name: 'Anne Marie',
-    username: 'anne'
+    username: 'anne',
   }
 
   const mockHandler = jest.fn()
 
-  render(<Blog blog={blog} user={user} handleLikes={mockHandler}/>)
+  render(<Blog blog={blog} user={user} handleLikes={mockHandler} />)
 
   const userManager = userEvent.setup()
   const button = screen.getByText('like')
@@ -60,7 +60,7 @@ test('clicking on the like button twice', async () => {
 test('<BlogForm /> updates parent state and calls onSubmit', async () => {
   const createBlog = jest.fn()
   const user = userEvent.setup()
-  render(<BlogForm createBlog={createBlog}/>)
+  render(<BlogForm createBlog={createBlog} />)
   const inputTitle = screen.getByPlaceholderText('title')
   const inputAuthor = screen.getByPlaceholderText('author')
   const inputUrl = screen.getByPlaceholderText('url')
