@@ -4,15 +4,18 @@ import { Blog, BlogForm } from './components/Blog'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
+import {
+  setNotification,
+  clearNotification,
+} from './reducers/notificationReducer'
+import { useDispatch, useSelector } from 'react-redux'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [message, setMessage] = useState({
-    text: null,
-    type: '',
-  })
+  const message = useSelector(state => state)
   const blogFormRef = useRef()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (user !== null) {
@@ -48,20 +51,27 @@ const App = () => {
     setBlogs(blogs.map(b => (b.id === id ? updatedObject : b)))
     response.then(r => {
       console.log(r)
-      setMessage({
-        text: `Liked ${blog.title}`,
-        type: 'success',
-      })
+      dispatch(
+        setNotification({
+          text: `Liked ${r.title} by ${r.author}`,
+          type: 'success',
+        })
+      )
+      setTimeout(() => {
+        dispatch(clearNotification())
+      }, 5000)
     })
   }
   const handleRemove = id => {
     const blog = blogs.find(b => b.id === id)
     if (window.confirm(`remove ${blog.title} by ${blog.author}?`)) {
       blogService.remove(id).then(() => {
-        setMessage({
-          text: `Removed ${blog.title}`,
-          type: 'success',
-        })
+        dispatch(
+          setNotification({
+            text: `Removed ${blog.title} by ${blog.author}`,
+            type: 'success',
+          })
+        )
       })
     }
   }
@@ -71,23 +81,24 @@ const App = () => {
       .create(newBlogObject)
       .then(savedBlog => {
         setBlogs(blogs.concat(savedBlog))
-        setMessage({
-          text: `a new blog ${savedBlog.title} by ${savedBlog.author} added`,
-          type: 'success',
-        })
+        dispatch(
+          setNotification({
+            text: `Added ${savedBlog.title} by ${savedBlog.author}`,
+            type: 'success',
+          })
+        )
         blogFormRef.current.toggleVisibility()
       })
       .catch(exception => {
-        setMessage({
-          text: `${exception.data}`,
-          type: 'error',
-        })
+        dispatch(
+          setNotification({
+            text: exception.response.data.error,
+            type: 'error',
+          })
+        )
       })
     setTimeout(() => {
-      setMessage({
-        text: null,
-        type: '',
-      })
+      dispatch(clearNotification())
     }, 5000)
   }
 
@@ -119,8 +130,8 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={message} />
-      <Login user={user} setUser={setUser} setMessage={setMessage} />
+      <Notification message={message.notifications} />
+      <Login user={user} setUser={setUser} />
       {blog}
     </div>
   )

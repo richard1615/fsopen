@@ -1,9 +1,12 @@
 import { useState } from 'react'
 import loginService from '../services/login'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
 
-const Login = ({ user, setUser, setMessage }) => {
+const Login = ({ user, setUser }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
   const handleSubmit = async e => {
     e.preventDefault()
     try {
@@ -12,16 +15,10 @@ const Login = ({ user, setUser, setMessage }) => {
       setUser(token)
       setUsername('')
       setPassword('')
-      setMessage({
-        text: 'Successfully logged in',
-        type: 'success',
-      })
+      dispatch(setNotification(`Logged in as ${token.name}`, 'success'))
     } catch (exception) {
       console.log(exception)
-      setMessage({
-        text: 'invalid username or password',
-        type: 'error',
-      })
+      dispatch(setNotification('Wrong username or password', 'error'))
     }
   }
 
