@@ -7,7 +7,7 @@ const blogSlice = createSlice({
     setBlogs(state, action) {
       return action.payload
     },
-    sortBlogs(state, action) {
+    sortBlogs(state) {
       return state.sort((a, b) => b.likes - a.likes)
     },
     addBlog(state, action) {
@@ -26,5 +26,6 @@ const blogSlice = createSlice({
   },
 })
 
-export const { setBlogs, addBlog, deleteBlog, likeBlog, sortBlogs } = blogSlice.actions
+export const { setBlogs, addBlog, deleteBlog, likeBlog, sortBlogs } =
+  blogSlice.actions
 export default blogSlice.reducer

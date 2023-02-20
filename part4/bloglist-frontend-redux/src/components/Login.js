@@ -1,18 +1,20 @@
 import { useState } from 'react'
 import loginService from '../services/login'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
+import { setUser } from '../reducers/userReducer'
 
-const Login = ({ user, setUser }) => {
+const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
   const handleSubmit = async e => {
     e.preventDefault()
     try {
       const token = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(token))
-      setUser(token)
+      dispatch(setUser(token))
       setUsername('')
       setPassword('')
       dispatch(setNotification(`Logged in as ${token.name}`, 'success'))
@@ -23,9 +25,8 @@ const Login = ({ user, setUser }) => {
   }
 
   const handleLogout = () => {
-    console.log('logged out')
     window.localStorage.removeItem('loggedBlogAppUser')
-    setUser(null)
+    dispatch(setUser(null))
   }
 
   if (user === null) {

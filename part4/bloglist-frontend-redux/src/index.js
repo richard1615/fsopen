@@ -7,11 +7,13 @@ import { Provider } from 'react-redux'
 
 import notificationReducer from './reducers/notificationReducer'
 import blogReducer from './reducers/blogReducer'
+import userReducer from './reducers/userReducer'
 
 const store = configureStore({
   reducer: {
-    notifications: notificationReducer,
+    notification: notificationReducer,
     blogs: blogReducer,
+    user: userReducer,
   },
 })
 
