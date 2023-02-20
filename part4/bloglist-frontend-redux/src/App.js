@@ -6,25 +6,13 @@ import { setBlogs } from './reducers/blogReducer'
 import { setUser } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import BlogRoutes from './components/Routes'
+import userServices from './services/users'
+import { setUsers } from './reducers/usersReducer'
 
 const App = () => {
   const message = useSelector(state => state.notification)
   const user = useSelector(state => state.user)
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    if (user !== null) {
-      blogService.setToken(user.token)
-      blogService
-        .getAll()
-        .then(serverBlogs => {
-          dispatch(setBlogs(serverBlogs))
-        })
-        .catch()
-    } else {
-      setBlogs([])
-    }
-  }, [user])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -34,6 +22,18 @@ const App = () => {
       blogService.setToken(loggedUser.token)
     }
   }, [])
+
+  useEffect(() => {
+    if (user !== null) {
+      blogService.setToken(user.token)
+      blogService.getAll()
+        .then(serverBlogs => {
+          dispatch(setBlogs(serverBlogs))
+        })
+      userServices.getAll()
+        .then(users => dispatch(setUsers(users)))
+    }
+  }, [user])
 
   return (
     <div>
