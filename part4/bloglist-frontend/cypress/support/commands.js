@@ -1,13 +1,14 @@
-Cypress.Commands.add('login', (email, password) => {
+Cypress.Commands.add('login', (username, password) => {
   cy.request('POST', `${Cypress.env('BACKEND')}/login`, {
-    username: 'mary', password: 'secret'
+    username,
+    password
   }).then(response => {
     localStorage.setItem('loggedBlogAppUser', JSON.stringify(response.body))
     cy.visit('')
   })
 })
 
-Cypress.Commands.add('logout', (title, author, url) => {
+Cypress.Commands.add('logout', () => {
   window.localStorage.removeItem('loggedBlogAppUser')
   cy.visit('')
 })

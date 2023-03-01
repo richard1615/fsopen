@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import Login from './components/Login'
-import { Blog, BlogForm } from './components/Blog'
+import Blog from './components/Blog'
+import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import blogService from './services/blogs'
@@ -98,7 +99,7 @@ const App = () => {
       })
     setTimeout(() => {
       dispatch(clearNotification())
-    }, 5000)
+    }, 1000)
   }
 
   const sortByLikes = () => {
@@ -112,7 +113,6 @@ const App = () => {
       <h2>blogs</h2>
       <button onClick={sortByLikes}>Sort by likes</button>
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        f
         <BlogForm createBlog={handleAddPost} />
       </Togglable>
       {blogs.map(blog => (

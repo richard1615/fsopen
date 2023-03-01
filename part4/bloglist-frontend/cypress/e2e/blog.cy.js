@@ -33,7 +33,7 @@ describe('Blog app', function () {
 
   describe('When logged in', function () {
     beforeEach(function () {
-      cy.login({username:'mary', password: 'secret'})
+      cy.login({ username:'mary', password: 'secret' })
     })
 
     it('A blog can be created', function () {
