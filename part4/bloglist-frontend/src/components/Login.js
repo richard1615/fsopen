@@ -15,10 +15,15 @@ const Login = ({ user, setUser }) => {
       setUser(token)
       setUsername('')
       setPassword('')
-      dispatch(setNotification(`Logged in as ${token.name}`, 'success'))
+      dispatch(setNotification({
+        text: `Logged in as ${token.name}`, type: 'success'
+      }))
     } catch (exception) {
       console.log(exception)
-      dispatch(setNotification('Wrong username or password', 'error'))
+      dispatch(setNotification({
+        text: 'Wrong username or password',
+        type: 'error'
+      }))
     }
   }
 

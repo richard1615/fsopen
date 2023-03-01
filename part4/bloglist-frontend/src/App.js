@@ -8,12 +8,11 @@ import {
   setNotification,
   clearNotification,
 } from './reducers/notificationReducer'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const message = useSelector(state => state)
   const blogFormRef = useRef()
   const dispatch = useDispatch()
 
@@ -48,7 +47,7 @@ const App = () => {
       user: blog.user.id,
     }
     const response = blogService.like(updatedObject)
-    setBlogs(blogs.map(b => (b.id === id ? updatedObject : b)))
+    setBlogs(blogs.map(b => (b.id === id ? { ...blog, likes: blog.likes + 1 } : b)))
     response.then(r => {
       console.log(r)
       dispatch(
@@ -130,7 +129,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={message.notifications} />
+      <Notification />
       <Login user={user} setUser={setUser} />
       {blog}
     </div>

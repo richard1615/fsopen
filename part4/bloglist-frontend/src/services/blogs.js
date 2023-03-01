@@ -37,6 +37,7 @@ const like = async updatedBlog => {
   const id = updatedBlog.id
   console.log(id)
   const response = await axios.put(`${baseUrl}/${id}`, updatedBlog, config)
+  console.log(response.data)
   return response.data
 }
 
