@@ -11,6 +11,9 @@ import blogReducer from './reducers/blogReducer'
 import userReducer from './reducers/userReducer'
 import usersReducer from './reducers/usersReducer'
 import commentsReducer from './reducers/commentsReducer'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+
+const theme = createTheme()
 
 const store = configureStore({
   reducer: {
@@ -23,9 +26,11 @@ const store = configureStore({
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <Router>
-      <App />
-    </Router>
-  </Provider>
+  <ThemeProvider theme={theme}>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </ThemeProvider>
 )

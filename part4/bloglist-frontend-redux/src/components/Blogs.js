@@ -52,6 +52,7 @@ const Blogs = () => {
 
   return (
     <div>
+      <h2>Blogs</h2>
       <Navbar />
       <button onClick={sortByLikes}>Sort by likes</button>
       <Togglable buttonLabel="new blog" ref={blogFormRef}>

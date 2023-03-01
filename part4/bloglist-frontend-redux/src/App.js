@@ -37,7 +37,6 @@ const App = () => {
 
   return (
     <div>
-      <h1>blogs</h1>
       <Notification message={message} />
       <Login />
       <BlogRoutes />
