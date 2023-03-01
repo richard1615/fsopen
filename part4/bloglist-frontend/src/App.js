@@ -66,6 +66,7 @@ const App = () => {
     const blog = blogs.find(b => b.id === id)
     if (window.confirm(`remove ${blog.title} by ${blog.author}?`)) {
       blogService.remove(id).then(() => {
+        setBlogs(blogs.filter(b => b.id !== id))
         dispatch(
           setNotification({
             text: `Removed ${blog.title} by ${blog.author}`,
@@ -80,7 +81,11 @@ const App = () => {
     blogService
       .create(newBlogObject)
       .then(savedBlog => {
-        setBlogs(blogs.concat(savedBlog))
+        const savedBlogFrontend = {
+          ...savedBlog,
+          user: user
+        }
+        setBlogs(blogs.concat(savedBlogFrontend))
         dispatch(
           setNotification({
             text: `Added ${savedBlog.title} by ${savedBlog.author}`,

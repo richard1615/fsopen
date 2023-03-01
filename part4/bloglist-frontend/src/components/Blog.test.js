@@ -1,7 +1,8 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
-import { Blog, BlogForm } from './Blog'
+import Blog from './Blog'
+import BlogForm from './BlogForm'
 import userEvent from '@testing-library/user-event'
 
 test('renders only required components', () => {
@@ -24,9 +25,35 @@ test('renders only required components', () => {
   const { container } = render(<Blog blog={blog} user={user} />)
 
   const element = container.querySelector('.blog')
-  expect(element).toHaveTextContent('someBlog someAuthor')
+  expect(element).toHaveTextContent('someBlog, someAuthorviewlikeremove')
   expect(element).not.toHaveTextContent('someUrl')
   expect(element).not.toHaveTextContent('10')
+})
+
+test('renders all components after clicking view', async () => {
+  const blog = {
+    title: 'someBlog',
+    author: 'someAuthor',
+    url: 'someUrl',
+    likes: 10,
+    user: {
+      username: 'anne',
+      name: 'Anne Marie',
+    },
+  }
+
+  const user = {
+    name: 'Anne Marie',
+    username: 'anne',
+  }
+
+  const { container } = render(<Blog blog={blog} user={user} />)
+  const userManager = userEvent.setup()
+  const button = screen.getByText('view')
+  await userManager.click(button)
+  expect(container).toHaveTextContent('someBlog, someAuthorhidelikeremove')
+  expect(container).toHaveTextContent('someUrl')
+  expect(container).toHaveTextContent('10')
 })
 
 test('clicking on the like button twice', async () => {

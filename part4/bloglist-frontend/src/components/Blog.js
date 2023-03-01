@@ -1,4 +1,7 @@
+import { useState } from 'react'
+
 const Blog = ({ blog, user, handleRemove, handleLikes }) => {
+  const [visible, setVisible] = useState(false)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -7,8 +10,6 @@ const Blog = ({ blog, user, handleRemove, handleLikes }) => {
     marginBottom: 5,
   }
 
-  console.log(blog.user)
-
   const deleteButton =
     user.username === blog.user.username ? (
       <button onClick={handleRemove}>remove</button>
@@ -16,9 +17,17 @@ const Blog = ({ blog, user, handleRemove, handleLikes }) => {
 
   return (
     <div style={blogStyle} className="blog">
-      {blog.title}, {blog.author} like: {blog.likes}
+      {blog.title}, {blog.author}
+      <button onClick={() => setVisible(!visible)}>{visible?'hide':'view'}</button>
       <button onClick={handleLikes}>like</button>
       {deleteButton}
+      {visible?(
+        <>
+          <p>{blog.url}</p>
+          <p>likes: {blog.likes}</p>
+          <p>by: {blog.user.name}</p>
+        </>
+      ):null}
     </div>
   )
 }
