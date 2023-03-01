@@ -7,7 +7,11 @@ const getComments = (blogId) => {
 }
 
 const createComment = async (blogId, newComment) => {
-  const response = await axios.post(`${baseUrl}/${blogId}`, newComment)
+  const commentToPost = {
+    content: newComment,
+    blog: blogId
+  }
+  const response = await axios.post(`${baseUrl}/${blogId}`, commentToPost)
   return response.data
 }
 
