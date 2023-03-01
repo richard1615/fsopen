@@ -8,6 +8,7 @@ import {
   clearNotification,
   setNotification,
 } from '../reducers/notificationReducer'
+import Navbar from './Navbar'
 
 const Blogs = () => {
   const dispatch = useDispatch()
@@ -50,6 +51,7 @@ const Blogs = () => {
 
   return (
     <div>
+      <Navbar />
       <button onClick={sortByLikes}>Sort by likes</button>
       <Togglable buttonLabel="new blog" ref={blogFormRef}>
         <BlogForm createBlog={handleAddPost} />

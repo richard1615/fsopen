@@ -6,6 +6,7 @@ import {
   setNotification,
 } from '../reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
@@ -117,7 +118,8 @@ const Blog = ({ blog }) => {
 
   return (
     <div style={blogStyle} className="blog">
-      {blog.title}, {blog.author} like: {blog.likes}
+      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+      , {blog.author} like: {blog.likes}
       <button onClick={() => handleLikes(blog)}>like</button>
       {deleteButton}
     </div>

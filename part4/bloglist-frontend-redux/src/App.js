@@ -37,9 +37,9 @@ const App = () => {
 
   return (
     <div>
+      <h1>blogs</h1>
       <Notification message={message} />
       <Login />
-      <h2>blogs</h2>
       <BlogRoutes />
     </div>
   )

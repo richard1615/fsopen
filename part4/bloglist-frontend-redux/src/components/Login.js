@@ -31,41 +31,18 @@ const Login = () => {
 
   if (user === null) {
     return (
-      <div>
-        <h1>log in to application</h1>
-        <form onSubmit={handleSubmit} action="" method="post" id="login-form">
-          <div>
-            username
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-              id="input-username"
-            />
-          </div>
-          <div>
-            password
-            <input
-              type="text"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-              id="input-password"
-            />
-          </div>
-          <input type="submit" value="log in" />
+      <>
+        <form onClick={handleSubmit}>
+          <input type='text' placeholder='username' value={username} onChange={(e) => setUsername(e.target.value)}/>
+          <input type='text' placeholder='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
+          <button type="submit">login</button>
         </form>
-      </div>
-    )
-  } else {
-    return (
-      <div>
-        {user.name} logged in
-        <button onClick={handleLogout}>Log Out</button>
-      </div>
+      </>
     )
   }
+  return (
+    <button onClick={handleLogout}>logout</button>
+  )
 }
 
 export default Login
