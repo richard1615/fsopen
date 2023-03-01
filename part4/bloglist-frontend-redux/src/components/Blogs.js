@@ -1,5 +1,6 @@
 import Togglable from './Togglable'
-import { Blog, BlogForm } from './Blog'
+import Blog from './Blog'
+import BlogForm from './BlogForm'
 import { addBlog, sortBlogs } from '../reducers/blogReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRef } from 'react'
