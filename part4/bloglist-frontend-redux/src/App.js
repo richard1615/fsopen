@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import BlogRoutes from './components/Routes'
 import userServices from './services/users'
 import { setUsers } from './reducers/usersReducer'
+import Navbar from './components/Navbar'
 
 const App = () => {
   const message = useSelector(state => state.notification)
@@ -37,6 +38,7 @@ const App = () => {
 
   return (
     <div>
+      <Navbar/>
       <Notification message={message} />
       <Login />
       <BlogRoutes />

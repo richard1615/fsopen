@@ -1,4 +1,14 @@
 import { useState } from 'react'
+import { Paper, styled, TextField, Button } from '@mui/material'
+import * as React from 'react'
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'left',
+  color: theme.palette.text.secondary,
+}))
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
@@ -17,20 +27,24 @@ const BlogForm = ({ createBlog }) => {
 
   return (
     <form action="" method="post" onSubmit={addBlog} id="blog-form">
-      <div>
-        title
-        <input
+      <Item>
+        <TextField
+          fullWidth
+          label="Title"
+          variant="outlined"
           type="text"
-          name="title"
+          name="Title"
           value={title}
           placeholder="title"
           onChange={({ target }) => setTitle(target.value)}
           id="input-title"
         />
-      </div>
-      <div>
-        author
-        <input
+      </Item>
+      <Item>
+        <TextField
+          fullWidth
+          label="Author"
+          variant="outlined"
           type="text"
           name="author"
           value={author}
@@ -38,10 +52,12 @@ const BlogForm = ({ createBlog }) => {
           onChange={({ target }) => setAuthor(target.value)}
           id="input-author"
         />
-      </div>
-      <div>
-        url
-        <input
+      </Item>
+      <Item>
+        <TextField
+          fullWidth
+          label="URL"
+          variant="outlined"
           type="text"
           name="url"
           value={url}
@@ -49,8 +65,8 @@ const BlogForm = ({ createBlog }) => {
           onChange={({ target }) => setUrl(target.value)}
           id="input-url"
         />
-      </div>
-      <button type="submit">add blog</button>
+      </Item>
+      <Button variant="contained" onClick={addBlog}>Add Blog</Button>
     </form>
   )
 }

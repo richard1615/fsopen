@@ -1,5 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
+import { Switch } from '@mui/material'
 
 const Togglable = forwardRef((props, refs) => {
   const [visible, setVisible] = useState(false)
@@ -24,11 +25,21 @@ const Togglable = forwardRef((props, refs) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{props.buttonLabel}</button>
+        <Switch
+          checked={visible}
+          onChange={toggleVisibility}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        {props.buttonLabel}
       </div>
       <div style={showWhenVisible}>
+        <Switch
+          checked={visible}
+          onChange={toggleVisibility}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
+        cancel
         {props.children}
-        <button onClick={toggleVisibility}>cancel</button>
       </div>
     </div>
   )
