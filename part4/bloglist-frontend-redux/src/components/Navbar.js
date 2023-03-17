@@ -61,7 +61,7 @@ function Navbar() {
               sx={{
                 display: { xs: 'block', md: 'none' },
               }}
-            >
+             open>
               {pages.map((page) => (
                 <MenuItem key={page}>
                   <Typography textAlign="center">{page}</Typography>
@@ -94,7 +94,7 @@ function Navbar() {
                 key={page}
                 sx={{ my: 2, color: 'white', display: 'block' }}
               >
-                {page}
+                <Link to={}/>
               </Button>
             ))}
           </Box>
